@@ -281,6 +281,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     Iterator<?> actualIter = actual().iterator();
     Iterator<?> requiredIter = required.iterator();
 
+    if (!requiredIter.hasNext()) {
+      // The required collection is empty, so we can call isEmpty() to generate a simpler failure
+      // message when the subject is non-empty.
+      isEmpty();
+      // If we reach this point the subject was empty, so we can return because this method should
+
+      return IN_ORDER;
+    }
+
     // Step through both iterators comparing elements pairwise.
     while (actualIter.hasNext() && requiredIter.hasNext()) {
       Object actualElement = actualIter.next();
